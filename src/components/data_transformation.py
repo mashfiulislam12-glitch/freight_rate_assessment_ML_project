@@ -56,11 +56,11 @@ class DataTransformation:
             df["day"] = df["date"].dt.day
             df["day_of_week"] = df["date"].dt.dayofweek
             df["week_of_year"] = df["date"].dt.isocalendar().week.astype(int)
-            df.drop(columns=['load_id','date'],inplace=True)
+            df.drop(columns=['load_id','date'],inplace=True,errors='ignore')
         
             return df
         except Exception as e:
-            CustomException(e,sys)
+            raise CustomException(e,sys)
     def initiate_data_transformation(self,train_path,test_path):
         try:
             train_data=pd.read_csv(train_path)
