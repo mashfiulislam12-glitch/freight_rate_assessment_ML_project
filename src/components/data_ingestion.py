@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from src.logger import logging
 from sklearn.model_selection import train_test_split
 from src.exception import CustomException
+from src.components.data_transformation import DataTransformation
 
 @dataclass
 class DataIngestionConfig:
@@ -49,3 +50,22 @@ if __name__=='__main__':
 
     print('train_path:',train_path)
     print('test_path:',test_path)
+
+    obj = DataTransformation()
+
+
+
+    X_train_arr, y_train, X_test_arr, y_test = (
+        obj.initiate_data_transformation(
+            train_path,
+            test_path
+        )
+    )
+
+    print("X_train shape:", X_train_arr.shape)
+    print("y_train shape:", y_train.shape)
+
+    print("X_test shape:", X_test_arr.shape)
+    print("y_test shape:", y_test.shape)
+
+    print("Data transformation completed successfully!")
