@@ -17,6 +17,7 @@ from src.utils import save_object
 
 @dataclass
 class DataTransformationConfig:
+    cleaner_obj_file_path=os.path.join('artifacts','cleaner.pkl')
     preprocessor_obj_file_path=os.path.join('artifacts','preprocessor.pkl')
 
 class DataTransformation:
@@ -64,11 +65,12 @@ class DataTransformation:
         try:
             train_data=pd.read_csv(train_path)
             test_data=pd.read_csv(test_path)
-
-            train_data=self.clean_data(train_data)
-            test_data=self.clean_data(test_data)
+            cleaner_obj=self.clean_data
+            train_data=cleaner_obj(train_data)
+            test_data=cleaner_obj(test_data)
 
             preprocessor_obj=self.get_data_transformation_obj()
+    
 
             target_column_name='posted_rate'
 
@@ -82,6 +84,10 @@ class DataTransformation:
             X_test_arr=preprocessor_obj.transform(X_test)
 
 
+            save_object(
+                file_path=self.datatransformationconfig.cleaner_obj_file_path,
+                obj=cleaner_obj
+            )
             save_object(
                 file_path=self.datatransformationconfig.preprocessor_obj_file_path,
                 obj=preprocessor_obj
